@@ -34,7 +34,7 @@ public class MyAutoController extends CarController{
 
 		//Initialize map.
 		mapInfor=getMap();
-
+    //TODO road -> empty
 	}
 
 	// Coordinate initialGuess;
@@ -42,7 +42,8 @@ public class MyAutoController extends CarController{
 	@Override
 	public void update() {
 
-
+		//TODO：把更新视野抽出来
+		//TODO: 会不会死
 		// Gets what the car can see
 		HashMap<Coordinate, MapTile> currentView = getView();
 
@@ -122,6 +123,8 @@ public class MyAutoController extends CarController{
 
 
 	}
+
+
 
 	/**
 	 * Check if you have a wall in front of you!

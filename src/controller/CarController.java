@@ -144,3 +144,7 @@ public abstract class CarController {
 	 */
 	public abstract void update();
 }
+//TODO  新建一个二维int数组（利用getmap方法）。 所有墙壁设为1，非墙壁设为0.
+//TODO  随机探索：找一个empty进行可达性分析，可以的话就前往。不可以就再找一个前往。
+//TODO  看到包裹后进行可达性分析，可以的话前往，不可以的话继续之前的探索。
+//TODO  如果包裹满了，去终点
