@@ -10,20 +10,20 @@ public class StrategyFactory {
 
     private HashMap<Coordinate, MapTile> currentView;
     private HashMap<Coordinate, MapTile> exploredMap;
-    private WorldSpatial.Direction prevDirection;
+    private Coordinate prevCoordinate;
 
-    public StrategyFactory(WorldSpatial.Direction prevDirection, HashMap<Coordinate, MapTile> currentView, HashMap<Coordinate, MapTile> exploredMap) {
+    public StrategyFactory(Coordinate prevCoordinate, HashMap<Coordinate, MapTile> currentView, HashMap<Coordinate, MapTile> exploredMap) {
         this.currentView = currentView;
         this.exploredMap = exploredMap;
-        this.prevDirection = prevDirection;
+        this.prevCoordinate = prevCoordinate;
     }
 
     public IStrategy getStrategy(int currentParcelsNum, int neededParcelsNum, Coordinate currentPosition) {
 
         Boolean isParcelInView = isParcelInView(currentView);
         Boolean isEnough = currentParcelsNum == neededParcelsNum;
-        Coordinate destination = null;
-        IStrategy strategy = null;
+        Coordinate destination;
+        IStrategy strategy;
 
         if (isEnough || isParcelInView) {
 
@@ -35,7 +35,7 @@ public class StrategyFactory {
                 destination = getParcelPosition();
             }
 
-            strategy = new HasTargetStrategy(currentPosition, destination, prevDirection, currentView);
+            strategy = new HasTargetStrategy(currentPosition, destination, prevCoordinate, exploredMap);
 
         }
 
@@ -50,6 +50,7 @@ public class StrategyFactory {
         return false;
     }
 
+    //TODO: get parcel position as destination
     private Coordinate getParcelPosition() {
         return new Coordinate(1, 2);
     }

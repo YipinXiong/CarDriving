@@ -9,14 +9,14 @@ import java.util.HashMap;
 public class HasTargetStrategy implements IStrategy {
 
     private Coordinate currentPos;
-    private Coordinate targetPos;
-    private WorldSpatial.Direction previousOrnt;
+    private Coordinate destination;
+    private Coordinate prevCoordinate;
     private HashMap<Coordinate, MapTile> exploredMap;
 
-    public HasTargetStrategy(Coordinate currentPos, Coordinate targetPos, WorldSpatial.Direction previousOrnt, HashMap<Coordinate, MapTile> exploredMap) {
+    public HasTargetStrategy(Coordinate currentPos, Coordinate prevCoordinate, Coordinate destination, HashMap<Coordinate, MapTile> exploredMap) {
         this.currentPos = currentPos;
-        this.targetPos = targetPos;
-        this.previousOrnt = previousOrnt;
+        this.destination = destination;
+        this.prevCoordinate = prevCoordinate;
         this.exploredMap = exploredMap;
     }
 

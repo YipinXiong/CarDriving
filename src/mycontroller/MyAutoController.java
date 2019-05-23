@@ -28,13 +28,14 @@ public class MyAutoController extends CarController {
         HashMap<Coordinate, MapTile> currentView = getView();
         int foundParcels = numParcelsFound();
         int neededParcels = numParcels();
+        Coordinate currentPos = new Coordinate(getPosition());
 
         //update map information by view
         updateExploredMapByView(currentView);
 
         //based on current variables execute different strategy.
-        StrategyFactory factory = new StrategyFactory( getOrientation(), currentView, getExploredMap());
-        IStrategy strategy = factory.getStrategy(foundParcels, neededParcels, new Coordinate(getPosition()));
+        StrategyFactory factory = new StrategyFactory(currentPos, currentView, getExploredMap());
+        IStrategy strategy = factory.getStrategy(foundParcels, neededParcels, currentPos);
         strategy.nextStep(this);
     }
 
