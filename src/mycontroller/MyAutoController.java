@@ -39,6 +39,7 @@ public class MyAutoController extends CarController {
         strategy.nextStep(this);
     }
 
+    // Information Expert
     private void updateExploredMapByView(HashMap<Coordinate, MapTile> currentView){
         UpdateMapByView.updateExploredMap(currentView, getExploredMap());
     }
