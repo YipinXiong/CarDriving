@@ -15,6 +15,7 @@ public class ManualController extends CarController {
 	public void update(){
 		Set<Integer> parcels = Simulation.getParcels();
 		Simulation.resetParcels();
+		System.out.println(getOrientation());
         for (int k : parcels){
 		     switch (k){
 		        case Input.Keys.B:

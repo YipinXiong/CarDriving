@@ -6,10 +6,8 @@ import tiles.*;
 import world.Car;
 
 import java.util.HashMap;
-import java.util.Map;
 
 import utilities.Coordinate;
-import world.WorldSpatial;
 import world.WorldSpatial.Direction;
 
 public class MyAutoController extends CarController {
@@ -19,12 +17,18 @@ public class MyAutoController extends CarController {
     private VariantStrategyFactory variantStrategyFactory;
     private IVariantStrategy strategy;
     private Simulation.StrategyMode variantToConserve;
+    private HashMap<Direction, Direction> oppositeDirection;
+    private HashMap<Direction, Direction> relativeRightDirection;
+    private Boolean isReverse;
 
     //Use singleton pattern here
 
+
     public MyAutoController(Car car) {
         super(car);
-        //The factory will generate a strategy regarding variant to conserve.
+        this.oppositeDirection = initOppositeDirection();
+        this.relativeRightDirection = initRelativeRightDirection();
+        this.isReverse = false;
         variantToConserve = Simulation.toConserve();
         this.variantStrategyFactory = new VariantStrategyFactory();
         this.strategy = variantStrategyFactory.getStrategy(variantToConserve);
@@ -38,23 +42,67 @@ public class MyAutoController extends CarController {
         HashMap<Coordinate, MapTile> exploredMap = getExploredMap();
         int foundParcels = numParcelsFound();
         int neededParcels = numParcels();
+        int currentSpeed = (int) getSpeed();
         Coordinate currentPos = new Coordinate(getPosition());
         Direction nextDirection;
+        Direction currentDir = getOrientation();
 
         nextDirection = strategy.nextStep(currentPos, currentView, exploredMap, foundParcels, neededParcels);
-
-        //TODO: move based on current direction and next direction;
-        moveTowardsNextCoordinate(nextDirection, getOrientation());
+        isReverse = turnToNextDirection(nextDirection, currentDir, currentSpeed, isReverse);
     }
 
-    private void moveTowardsNextCoordinate(Direction nextDir,Direction currentDir) {
-        if(nextDir.equals(currentDir)){
-            applyForwardAcceleration();
-        } else {
+    private Boolean turnToNextDirection(Direction nextDir, Direction currentDir, int currentSpeed, Boolean isReverse) {
 
+        //#warning: algorithm must return the same result if input the same coordinate
+        Boolean isOppoDir = nextDir.equals(oppositeDirection.get(currentDir));
+        Boolean isStop = currentSpeed == 0;
+
+        // This logic has the highest priority to start the car.
+        if(isStop && !isOppoDir) {
+            applyForwardAcceleration();
+            return false;
+        }
+
+        // Only opposite directive can alter the isReverse.
+        if(isOppoDir){
+            applyReverseAcceleration();
+            return true;
+        } else {
+            if(isReverse){
+                if(relativeRightDirection.get(currentDir).equals(nextDir)){
+                    turnLeft();
+                } else {
+                    turnRight();
+                }
+                return true;
+            } else {
+                if(relativeRightDirection.get(currentDir).equals(nextDir)){
+                    turnRight();
+                } else {
+                    turnLeft();
+                }
+                return false;
+            }
         }
     }
 
+    private HashMap<Direction, Direction> initOppositeDirection() {
+        HashMap<Direction, Direction> oppositeDirection = new HashMap<Direction, Direction>();
+        oppositeDirection.put(Direction.EAST, Direction.WEST);
+        oppositeDirection.put(Direction.SOUTH, Direction.NORTH);
+        oppositeDirection.put(Direction.WEST, Direction.EAST);
+        oppositeDirection.put(Direction.NORTH, Direction.SOUTH);
+        return oppositeDirection;
+    }
+
+    private HashMap<Direction, Direction> initRelativeRightDirection() {
+        HashMap<Direction, Direction> relativeLeftDir = new HashMap<Direction, Direction>();
+        relativeLeftDir.put(Direction.EAST,Direction.SOUTH);
+        relativeLeftDir.put(Direction.SOUTH, Direction.WEST);
+        relativeLeftDir.put(Direction.WEST, Direction.NORTH);
+        relativeLeftDir.put(Direction.NORTH,Direction.EAST);
+        return relativeLeftDir;
+    }
 
     public HashMap<Coordinate, MapTile> getExploredMap() {
         if (exploredMap == null) {
