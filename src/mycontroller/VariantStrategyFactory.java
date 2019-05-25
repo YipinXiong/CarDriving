@@ -1,5 +1,9 @@
 package mycontroller;
 import swen30006.driving.Simulation.StrategyMode;
+import tiles.MapTile;
+import utilities.Coordinate;
+
+import java.util.HashMap;
 
 
 /*
@@ -7,6 +11,7 @@ import swen30006.driving.Simulation.StrategyMode;
  */
 
 public class VariantStrategyFactory {
+
     public IVariantStrategy getStrategy(StrategyMode mode) {
         IVariantStrategy strategy;
 

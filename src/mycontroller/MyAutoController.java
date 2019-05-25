@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import utilities.Coordinate;
+import world.WorldSpatial;
+import world.WorldSpatial.Direction;
 
 public class MyAutoController extends CarController {
 
@@ -17,6 +19,7 @@ public class MyAutoController extends CarController {
     private VariantStrategyFactory variantStrategyFactory;
     private IVariantStrategy strategy;
     private Simulation.StrategyMode variantToConserve;
+
     //Use singleton pattern here
 
     public MyAutoController(Car car) {
@@ -30,32 +33,28 @@ public class MyAutoController extends CarController {
     // Coordinate initialGuess;
     @Override
     public void update() {
-//        System.out.println("getMap size: " + getMap().size());
-//        System.out.println("the total size of real Map: " + mapWidth()*mapWidth());
+
         HashMap<Coordinate, MapTile> currentView = getView();
+        HashMap<Coordinate, MapTile> exploredMap = getExploredMap();
         int foundParcels = numParcelsFound();
         int neededParcels = numParcels();
         Coordinate currentPos = new Coordinate(getPosition());
-        Coordinate nextPos;
+        Direction nextDirection;
 
-        //update map information by view
-        updateExploredMapByView(currentView);
-        //TODO: remove controller dependency
-        nextPos = strategy.nextStep();
-        moveTowardsNextCoordinate(nextPos);
+        nextDirection = strategy.nextStep(currentPos, currentView, exploredMap, foundParcels, neededParcels);
 
-        for(Map.Entry<Coordinate, MapTile> ac: getExploredMap().entrySet()){
-            System.out.print("(" + ac.getKey().x + "," + ac.getKey().y + ") " + ac.getValue().getType()+"      ");
+        //TODO: move based on current direction and next direction;
+        moveTowardsNextCoordinate(nextDirection, getOrientation());
+    }
+
+    private void moveTowardsNextCoordinate(Direction nextDir,Direction currentDir) {
+        if(nextDir.equals(currentDir)){
+            applyForwardAcceleration();
+        } else {
+
         }
     }
 
-    private void moveTowardsNextCoordinate(Coordinate nextPos) {
-    }
-
-    // Information Expert
-    private void updateExploredMapByView(HashMap<Coordinate, MapTile> currentView) {
-        UpdateMapByView.updateExploredMap(currentView, getExploredMap());
-    }
 
     public HashMap<Coordinate, MapTile> getExploredMap() {
         if (exploredMap == null) {
@@ -64,15 +63,4 @@ public class MyAutoController extends CarController {
         return exploredMap;
     }
 
-    private Coordinate getFinishCoordinate(){
-        //default coordinate
-        Coordinate finish = new Coordinate(1, 1);
-        for(Map.Entry<Coordinate, MapTile> entry: getExploredMap().entrySet()){
-            if(entry.getValue().isType(MapTile.Type.FINISH)){
-                finish = entry.getKey();
-                break;
-            }
-        }
-        return finish;
-    };
 }
