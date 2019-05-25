@@ -13,6 +13,7 @@ public class MyAutoController extends CarController {
 
     //Store the map information
     private static HashMap<Coordinate, MapTile> exploredMap = null;
+    private IStrategy strategy;
 
     //Use singleton pattern here
 
@@ -35,7 +36,7 @@ public class MyAutoController extends CarController {
 
         //based on current variables execute different strategy.
         StrategyFactory factory = new StrategyFactory(currentPos, currentView, getExploredMap());
-        IStrategy strategy = factory.getStrategy(foundParcels, neededParcels, currentPos);
+        strategy = factory.getStrategy(foundParcels, neededParcels, currentPos);
         strategy.nextStep(this);
     }
 
