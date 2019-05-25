@@ -4,24 +4,19 @@ import controller.CarController;
 import swen30006.driving.Simulation;
 import tiles.*;
 import world.Car;
-
 import java.util.HashMap;
-
 import utilities.Coordinate;
 import world.WorldSpatial.Direction;
 
 public class MyAutoController extends CarController {
 
-    //Store the map information
+    private static int STOP = 0;
     private static HashMap<Coordinate, MapTile> exploredMap = null;
     private VariantStrategyFactory variantStrategyFactory;
     private IVariantStrategy strategy;
-    private Simulation.StrategyMode variantToConserve;
     private HashMap<Direction, Direction> oppositeDirection;
     private HashMap<Direction, Direction> relativeRightDirection;
     private Boolean isReverse;
-
-    //Use singleton pattern here
 
 
     public MyAutoController(Car car) {
@@ -29,35 +24,34 @@ public class MyAutoController extends CarController {
         this.oppositeDirection = initOppositeDirection();
         this.relativeRightDirection = initRelativeRightDirection();
         this.isReverse = false;
-        variantToConserve = Simulation.toConserve();
         this.variantStrategyFactory = new VariantStrategyFactory();
-        this.strategy = variantStrategyFactory.getStrategy(variantToConserve);
+        this.strategy = variantStrategyFactory.getStrategy(Simulation.toConserve());
     }
 
     // Coordinate initialGuess;
     @Override
     public void update() {
-
+        
         HashMap<Coordinate, MapTile> currentView = getView();
         HashMap<Coordinate, MapTile> exploredMap = getExploredMap();
         int foundParcels = numParcelsFound();
         int neededParcels = numParcels();
-        int currentSpeed = (int) getSpeed();
         Coordinate currentPos = new Coordinate(getPosition());
-        Direction nextDirection;
+
+        Boolean isStop = (int) getSpeed() == STOP? true: false;
         Direction currentDir = getOrientation();
 
-        nextDirection = strategy.nextStep(currentPos, currentView, exploredMap, foundParcels, neededParcels);
-        isReverse = turnToNextDirection(nextDirection, currentDir, currentSpeed, isReverse);
+        Direction nextDirection = strategy.nextStep(currentPos, currentView, exploredMap, foundParcels, neededParcels);
+
+        isReverse = toNextDirAndCheckReverse(nextDirection, currentDir, isStop, isReverse);
     }
 
-    private Boolean turnToNextDirection(Direction nextDir, Direction currentDir, int currentSpeed, Boolean isReverse) {
+    private Boolean toNextDirAndCheckReverse(Direction nextDir, Direction currentDir, Boolean isStop, Boolean isReverse) {
 
         //#warning: algorithm must return the same result if input the same coordinate
         Boolean isOppoDir = nextDir.equals(oppositeDirection.get(currentDir));
-        Boolean isStop = currentSpeed == 0;
 
-        // This logic has the highest priority to start the car.
+        // This logic has the highest priority to start the car. Except that the opposite direction, forwarding.
         if(isStop && !isOppoDir) {
             applyForwardAcceleration();
             return false;
