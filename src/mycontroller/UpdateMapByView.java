@@ -15,7 +15,4 @@ public class UpdateMapByView {
         }
         return;
     }
-     public UpdateMapByView(){
-
-     };
 }
