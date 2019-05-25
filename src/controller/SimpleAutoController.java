@@ -42,7 +42,7 @@ public class SimpleAutoController extends CarController {
 				turnLeft();
 			} else {
 				// If wall on left and wall straight ahead, turn right
-				if(checkWallAhead(getOrientation(), currentView)) {
+					if(checkWallAhead(getOrientation(), currentView)) {
 					turnRight();
 				}
 			}
