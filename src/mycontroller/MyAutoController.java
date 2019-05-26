@@ -51,7 +51,13 @@ public class MyAutoController extends CarController {
         //#warning: algorithm must return the same result if input the same coordinate
         Boolean isOppoDir = nextDir.equals(oppositeDirection.get(currentDir));
 
-        // This logic has the highest priority to start the car. Except that the opposite direction, forwarding.
+        //This logic has the highest priority to start the car
+        if(currentDir.equals(nextDir)) {
+            applyForwardAcceleration();
+            return false;
+        }
+
+        //Not the opposite direction, forwarding to start.
         if(isStop && !isOppoDir) {
             applyForwardAcceleration();
             return false;
