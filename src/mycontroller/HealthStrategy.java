@@ -2,9 +2,8 @@ package mycontroller;
 
         import tiles.*;
         import utilities.Coordinate;
-        import world.WorldSpatial;
         import world.WorldSpatial.Direction;
-        import a.test.Test;
+        import routeAlgorithm.test.Test;
 
         import java.util.ArrayList;
         import java.util.HashMap;
