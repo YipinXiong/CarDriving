@@ -41,7 +41,7 @@ public class MyAutoController extends CarController {
         Boolean isStop = (int) getSpeed() == STOP? true: false;
         Direction currentDir = getOrientation();
 
-        Direction nextDirection = strategy.nextStep(currentPos, currentView, exploredMap, foundParcels, neededParcels);
+        Direction nextDirection = strategy.nextStep(mapWidth(),mapHeight(),currentPos, currentView, exploredMap, foundParcels, neededParcels);
 
         isReverse = toNextDirAndCheckReverse(nextDirection, currentDir, isStop, isReverse);
     }

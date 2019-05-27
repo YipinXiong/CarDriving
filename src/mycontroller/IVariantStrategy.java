@@ -13,7 +13,7 @@ public interface IVariantStrategy {
     //TODO: implements update explored map by view
 
     //TODO: integrated A* in this function
-    public Direction nextStep(Coordinate currentPos, HashMap<Coordinate, MapTile> currentView, HashMap<Coordinate, MapTile> exploredMap, int foundParcels, int neededParcels);
+    public Direction nextStep(int mapWidth,int mapHeight,Coordinate currentPos, HashMap<Coordinate, MapTile> currentView, HashMap<Coordinate, MapTile> exploredMap, int foundParcels, int neededParcels);
 
     //TODO: you can use this function directly.
 //    private Coordinate getFinishCoordinate(){
