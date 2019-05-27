@@ -14,7 +14,7 @@ public class Test
 		if(currentX==finishX&&currentY==finishY){
 			return null;
 		}
-		direction= new AStar().start(info);
+		direction= new Algorithm().start(info);
 		return direction;
 	}
 
