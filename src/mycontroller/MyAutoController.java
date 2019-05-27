@@ -18,7 +18,6 @@ public class MyAutoController extends CarController {
     private HashMap<Direction, Direction> relativeRightDirection;
     private Boolean isReverse;
 
-
     public MyAutoController(Car car) {
         super(car);
         this.oppositeDirection = initOppositeDirection();
@@ -42,7 +41,6 @@ public class MyAutoController extends CarController {
         Direction currentDir = getOrientation();
 
         Direction nextDirection = strategy.nextStep(mapWidth(),mapHeight(),currentPos, currentView, exploredMap, foundParcels, neededParcels);
-
         isReverse = toNextDirAndCheckReverse(nextDirection, currentDir, isStop, isReverse);
     }
 
@@ -85,6 +83,7 @@ public class MyAutoController extends CarController {
             }
         }
     }
+
 
     private HashMap<Direction, Direction> initOppositeDirection() {
         HashMap<Direction, Direction> oppositeDirection = new HashMap<Direction, Direction>();

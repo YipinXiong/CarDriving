@@ -7,7 +7,7 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 
 
-public class AStar
+public class Algorithm
 {
 	public  static final int WALL = 1;
 	public  static final int ROAD = 2;
