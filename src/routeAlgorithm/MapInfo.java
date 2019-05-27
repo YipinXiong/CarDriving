@@ -1,4 +1,4 @@
-package a;
+package routeAlgorithm;
 
 
 public class MapInfo

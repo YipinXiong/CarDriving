@@ -1,6 +1,6 @@
-package a.test;
+package routeAlgorithm.test;
 
-import a.*;
+import routeAlgorithm.*;
 import world.WorldSpatial;
 
 public class Test

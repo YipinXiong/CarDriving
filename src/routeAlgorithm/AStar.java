@@ -1,4 +1,4 @@
-package a;
+package routeAlgorithm;
 import world.WorldSpatial;
 
 import java.util.ArrayList;
@@ -9,14 +9,11 @@ import java.util.Queue;
 
 public class AStar
 {
-	public  int wall = 1;
-	public  int road = 2;
-
-	public  int roadCost = 10;
-
-	public  int trapCost = 100;
-
-	public  int healCost = 1;
+	public  static final int WALL = 1;
+	public  static final int ROAD = 2;
+	public  static final int ROAD_COST = 10;
+	public  static final int TRAP_COST = 100;
+	public  static final int HEAL_COST = 1;
 	
 	Queue<Node> openList = new PriorityQueue<Node>();
 	List<Node> closeList = new ArrayList<Node>();
@@ -65,7 +62,7 @@ public class AStar
 		while (end != null)
 		{
 			Coord c = end.coord;
-			maps[c.y][c.x] = road;
+			maps[c.y][c.x] = ROAD;
 			
 			
 			
@@ -103,13 +100,13 @@ public class AStar
 		int x = current.coord.x;
 		int y = current.coord.y;
 
-		addNeighborNodeInOpen(mapInfo,current, x - 1, y, roadCost);
+		addNeighborNodeInOpen(mapInfo,current, x - 1, y, ROAD_COST);
 
-		addNeighborNodeInOpen(mapInfo,current, x, y - 1, roadCost);
+		addNeighborNodeInOpen(mapInfo,current, x, y - 1, ROAD_COST);
 
-		addNeighborNodeInOpen(mapInfo,current, x + 1, y, roadCost);
+		addNeighborNodeInOpen(mapInfo,current, x + 1, y, ROAD_COST);
 
-		addNeighborNodeInOpen(mapInfo,current, x, y + 1, roadCost);
+		addNeighborNodeInOpen(mapInfo,current, x, y + 1, ROAD_COST);
 
 	}
 
@@ -122,10 +119,10 @@ public class AStar
 			Coord coord = new Coord(x, y);
 			int G = current.G;
 			if (mapInfo.maps[y][x] == 3) {
-				G = current.G + trapCost;
+				G = current.G + TRAP_COST;
 			}
 			else if(mapInfo.maps[y][x] == 4) {
-				G = current.G + healCost;
+				G = current.G + HEAL_COST;
 			}
 			else {
 				G = current.G + value;
@@ -189,7 +186,7 @@ public class AStar
 
 		if (x < 0 || x >= mapInfo.width || y < 0 || y >= mapInfo.hight) return false;
 
-		if (mapInfo.maps[y][x] == wall) return false;
+		if (mapInfo.maps[y][x] == WALL) return false;
 
 		if (isCoordInClose(x, y)) return false;
 
