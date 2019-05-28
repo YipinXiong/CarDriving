@@ -6,6 +6,11 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
+/**
+ * @Description: This class contains the logic about the route algorithm
+ * @Author: Guoen Jin    935833
+ *          Yipin Xiong  924608
+ */
 
 public class Algorithm
 {
@@ -21,11 +26,9 @@ public class Algorithm
 
 	public WorldSpatial.Direction start(MapInfo mapInfo)
 	{
-		if(mapInfo==null) return null;
-
+		if(mapInfo==null)return null;
 		openList.clear();
 		closeList.clear();
-
 		openList.add(mapInfo.start);
 		return moveNodes(mapInfo);
 	}
@@ -47,10 +50,8 @@ public class Algorithm
 			addNeighborNodeInOpen(mapInfo,current);
 		}
 		if(win.equals("no")) {
-		//System.out.println("fail");
 			return null;
 	}else {
-		//System.out.println("succeed");
 			return direction;
 	}
 	}
@@ -63,14 +64,9 @@ public class Algorithm
 		{
 			Coord c = end.coord;
 			maps[c.y][c.x] = ROAD;
-			
-			
-			
 			if(end!=start) {
-			
 			if(end.parent.coord.x-end.coord.x==1) {
 				route.add(WorldSpatial.Direction.SOUTH);
-				
 			}
 			else if(end.parent.coord.x-end.coord.x==-1) {
 				route.add(WorldSpatial.Direction.NORTH);
@@ -81,16 +77,9 @@ public class Algorithm
 			else if(end.parent.coord.y-end.coord.y==-1) {
 				route.add(WorldSpatial.Direction.EAST);
 			}
-	
 			}
-			
-			
 			end = end.parent;
-			
-	
-		
 		}
-		
 		return (route.get(route.size()-1));
 	}
 
@@ -99,15 +88,10 @@ public class Algorithm
 	{
 		int x = current.coord.x;
 		int y = current.coord.y;
-
 		addNeighborNodeInOpen(mapInfo,current, x - 1, y, ROAD_COST);
-
 		addNeighborNodeInOpen(mapInfo,current, x, y - 1, ROAD_COST);
-
 		addNeighborNodeInOpen(mapInfo,current, x + 1, y, ROAD_COST);
-
 		addNeighborNodeInOpen(mapInfo,current, x, y + 1, ROAD_COST);
-
 	}
 
 
@@ -183,13 +167,9 @@ public class Algorithm
 
 	private boolean canAddNodeToOpen(MapInfo mapInfo,int x, int y)
 	{
-
 		if (x < 0 || x >= mapInfo.width || y < 0 || y >= mapInfo.hight) return false;
-
 		if (mapInfo.maps[y][x] == WALL) return false;
-
 		if (isCoordInClose(x, y)) return false;
-
 		return true;
 	}
 

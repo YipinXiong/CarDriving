@@ -6,6 +6,12 @@ import utilities.Coordinate;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @Description: This class specify the logic to update map according to view
+ * @Author: Guoen Jin    935833
+ *          Yipin Xiong  924608
+ */
+
 public class UpdateMapByView {
 
     public static void updateExploredMap(int mapWidth,int mapHeight, HashMap<Coordinate, MapTile> currentView, HashMap<Coordinate, MapTile> exploredMap){

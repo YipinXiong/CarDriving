@@ -1,5 +1,10 @@
 package routeAlgorithm;
 
+/**
+ * @Description: This class represents the attributes about the map
+ * @Author: Guoen Jin    935833
+ *          Yipin Xiong  924608
+ */
 
 public class MapInfo
 {

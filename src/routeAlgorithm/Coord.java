@@ -1,5 +1,11 @@
 package routeAlgorithm;
 
+/**
+ * @Description: This class represents the coordinate of nodes
+ * @Author: Guoen Jin    935833
+ *          Yipin Xiong  924608
+ */
+
 public class Coord
 {
 

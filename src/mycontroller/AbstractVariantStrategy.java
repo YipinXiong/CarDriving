@@ -10,6 +10,19 @@ import java.util.Map;
 
 import static mycontroller.ActionState.*;
 
+/**
+ * @Description:
+ *     The car has four states corresponding to different action.
+ *     START:   Once the game start, go directly to the final.
+ *     LEAVE:   Enough parcels on the car, go exit the maze.
+ *     PICKUP:  Not enough parcels on the car and has the coordinate information
+ *              about an available parcel, go pick it up.
+ *     EXPLORE: If the car arrives at the final and found that no enough parcels
+ *              have been collected, then random exploration the maze.
+ * @Author: Guoen Jin    935833
+ *          Yipin Xiong  924608
+ */
+
 public abstract class AbstractVariantStrategy implements IVariantStrategy {
     //TODO 单独建一个类
 //    LEAVE代表收集了足够的包裹，直接前往终点。
@@ -19,10 +32,6 @@ public abstract class AbstractVariantStrategy implements IVariantStrategy {
     private boolean atTargetPosition = false;
     private boolean firstSearch = true;
     private ActionState currentState = START;
-    /*
-     * @para TODO 作者，介绍，整体思路
-     * */
-
     public abstract int[][] updateSimulateMap(int[][] simulateMap, HashMap<Coordinate, MapTile> exploredMap);
 
     @Override

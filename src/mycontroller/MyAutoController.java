@@ -8,6 +8,13 @@ import java.util.HashMap;
 import utilities.Coordinate;
 import world.WorldSpatial.Direction;
 
+/**
+ * @Description: The controller receives an recommend direction from strategy class and decide
+ *               which action should the car perform.
+ * @Author: Guoen Jin    935833
+ *          Yipin Xiong  924608
+ */
+
 public class MyAutoController extends CarController {
 
     private static int STOP = 0;

@@ -5,9 +5,11 @@ import utilities.Coordinate;
 
 import java.util.HashMap;
 
-
-/*
-    this factory will determine which strategy to use based on conserved variant.
+/**
+ * @Description: This factory will determine which strategy to use based
+ *               on conserved variant.
+ * @Author: Guoen Jin    935833
+ *          Yipin Xiong  924608
  */
 
 public class VariantStrategyFactory {

@@ -7,6 +7,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * @Description: In fuel optimize mode, we don't care about health cost and heal.
+ *               When creating simulated map, wall is being set to 1, others 0.
+ * @Author: Guoen Jin    935833
+ *          Yipin Xiong  924608
+ */
+
 public class FuelStrategy extends AbstractVariantStrategy {
     // Initialized simulate map
     // 1 represents wall, 0 represents other factors because we don't care health in this mode
