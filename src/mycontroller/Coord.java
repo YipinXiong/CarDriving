@@ -1,4 +1,4 @@
-package routeAlgorithm;
+package mycontroller;
 
 /**
  * @Description: This class represents the coordinate of nodes
@@ -9,8 +9,8 @@ package routeAlgorithm;
 public class Coord
 {
 
-	public int x;
-	public int y;
+	private int x;
+	private int y;
 
 	public Coord(int x, int y)
 	{
@@ -21,12 +21,29 @@ public class Coord
 	@Override
 	public boolean equals(Object obj)
 	{
-		if (obj == null) return false;
-		if (obj instanceof Coord)
-		{
+		if (obj == null) {
+			return false;
+		}
+		if (obj instanceof Coord) {
 			Coord c = (Coord) obj;
 			return x == c.x && y == c.y;
 		}
 		return false;
+	}
+
+	public int getX() {
+		return x;
+	}
+
+	public void setX(int x) {
+		this.x = x;
+	}
+
+	public int getY() {
+		return y;
+	}
+
+	public void setY(int y) {
+		this.y = y;
 	}
 }

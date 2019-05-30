@@ -1,4 +1,4 @@
-package routeAlgorithm;
+package mycontroller;
 import world.WorldSpatial;
 
 import java.util.ArrayList;
@@ -14,11 +14,11 @@ import java.util.Queue;
 
 public class Algorithm
 {
-	public  static final int WALL = 1;
-	public  static final int ROAD = 2;
-	public  static final int ROAD_COST = 10;
-	public  static final int TRAP_COST = 100;
-	public  static final int HEAL_COST = 1;
+	private  static final int WALL = 1;
+	private  static final int ROAD = 2;
+	private  static final int ROAD_COST = 10;
+	private  static final int TRAP_COST = 100;
+	private  static final int HEAL_COST = 1;
 	
 	Queue<Node> openList = new PriorityQueue<Node>();
 	List<Node> closeList = new ArrayList<Node>();
@@ -26,10 +26,12 @@ public class Algorithm
 
 	public WorldSpatial.Direction start(MapInfo mapInfo)
 	{
-		if(mapInfo==null)return null;
+		if(mapInfo==null){
+			return null;
+		}
 		openList.clear();
 		closeList.clear();
-		openList.add(mapInfo.start);
+		openList.add(mapInfo.getStart());
 		return moveNodes(mapInfo);
 	}
 
@@ -39,9 +41,8 @@ public class Algorithm
 		String win="no";
 		while (!openList.isEmpty())
 		{
-			if (isCoordInClose(mapInfo.end.coord))
-			{
-				direction=drawPath(mapInfo.maps, mapInfo.end,mapInfo.start);
+			if (isCoordInClose(mapInfo.getEnd().getCoord())) {
+				direction=drawPath(mapInfo.getMaps(), mapInfo.getEnd(),mapInfo.getStart());
 				win="yes";
 				break;
 			}
@@ -58,27 +59,28 @@ public class Algorithm
 
 	private WorldSpatial.Direction drawPath(int[][] maps, Node end,Node start)
 	{List<WorldSpatial.Direction> route = new ArrayList<WorldSpatial.Direction>();
-		if(end==null||maps==null) return null;
-		//System.out.println("total cost" + end.G);
+		if(end==null||maps==null) {
+			return null;
+		}
 		while (end != null)
 		{
-			Coord c = end.coord;
-			maps[c.y][c.x] = ROAD;
+			Coord c = end.getCoord();
+			maps[c.getY()][c.getX()] = ROAD;
 			if(end!=start) {
-			if(end.parent.coord.x-end.coord.x==1) {
+			if(end.getParent().getCoord().getX()-end.getCoord().getX()==1) {
 				route.add(WorldSpatial.Direction.SOUTH);
 			}
-			else if(end.parent.coord.x-end.coord.x==-1) {
+			else if(end.getParent().getCoord().getX()-end.getCoord().getX()==-1) {
 				route.add(WorldSpatial.Direction.NORTH);
 			}
-			else if(end.parent.coord.y-end.coord.y==1) {
+			else if(end.getParent().getCoord().getY()-end.getCoord().getY()==1) {
 				route.add(WorldSpatial.Direction.WEST);
 			}
-			else if(end.parent.coord.y-end.coord.y==-1) {
+			else if(end.getParent().getCoord().getY()-end.getCoord().getY()==-1) {
 				route.add(WorldSpatial.Direction.EAST);
 			}
 			}
-			end = end.parent;
+			end = end.getParent();
 		}
 		return (route.get(route.size()-1));
 	}
@@ -86,8 +88,8 @@ public class Algorithm
 
 	private void addNeighborNodeInOpen(MapInfo mapInfo,Node current)
 	{
-		int x = current.coord.x;
-		int y = current.coord.y;
+		int x = current.getCoord().getX();
+		int y = current.getCoord().getY();
 		addNeighborNodeInOpen(mapInfo,current, x - 1, y, ROAD_COST);
 		addNeighborNodeInOpen(mapInfo,current, x, y - 1, ROAD_COST);
 		addNeighborNodeInOpen(mapInfo,current, x + 1, y, ROAD_COST);
@@ -97,41 +99,36 @@ public class Algorithm
 
 	private void addNeighborNodeInOpen(MapInfo mapInfo,Node current, int x, int y, int value)
 	{
-		if (canAddNodeToOpen(mapInfo,x, y))
-		{
-			Node end=mapInfo.end;
+		if (canAddNodeToOpen(mapInfo,x, y)) {
+			Node end=mapInfo.getEnd();
 			Coord coord = new Coord(x, y);
-			int G = current.G;
-			if (mapInfo.maps[y][x] == 3) {
-				G = current.G + TRAP_COST;
+			int G = current.getG();
+			if (mapInfo.getMapContent(y,x) == 3) {
+				G = current.getG() + TRAP_COST;
 			}
-			else if(mapInfo.maps[y][x] == 4) {
-				G = current.G + HEAL_COST;
+			else if(mapInfo.getMapContent(y,x) == 4) {
+				G = current.getG() + HEAL_COST;
 			}
 			else {
-				G = current.G + value;
+				G = current.getG() + value;
 			}
 			Node child = findNodeInOpen(coord);
-			if (child == null)
-			{
-				int H=calcH(end.coord,coord);
-				if(isEndNode(end.coord,coord))
-				{
+			if (child == null) {
+				int H=calcH(end.getCoord(),coord);
+				if(isEndNode(end.getCoord(),coord)) {
 					child=end;
-					child.parent=current;
-					child.G=G;
-					child.H=H;
+					child.setParent(current);
+					child.setG(G);
+					child.setH(H);
 				}
-				else
-				{
+				else {
 					child = new Node(coord, current, G, H);
 				}
 				openList.add(child);
 			}
-			else if (child.G > G)
-			{
-				child.G = G;
-				child.parent = current;
+			else if (child.getG() > G) {
+				child.setG(G);
+				child.setParent(current);
 				openList.add(child);
 			}
 		}
@@ -140,11 +137,12 @@ public class Algorithm
 
 	private Node findNodeInOpen(Coord coord)
 	{
-		if (coord == null || openList.isEmpty()) return null;
+		if (coord == null || openList.isEmpty()) {
+			return null;
+		}
 		for (Node node : openList)
 		{
-			if (node.coord.equals(coord))
-			{
+			if (node.getCoord().equals(coord)) {
 				return node;
 			}
 		}
@@ -155,8 +153,8 @@ public class Algorithm
 
 	private int calcH(Coord end,Coord coord)
 	{
-		return Math.abs(end.x - coord.x)
-				+ Math.abs(end.y - coord.y);
+		return Math.abs(end.getX() - coord.getX())
+				+ Math.abs(end.getY() - coord.getY());
 	}
 
 	private boolean isEndNode(Coord end,Coord coord)
@@ -167,26 +165,33 @@ public class Algorithm
 
 	private boolean canAddNodeToOpen(MapInfo mapInfo,int x, int y)
 	{
-		if (x < 0 || x >= mapInfo.width || y < 0 || y >= mapInfo.hight) return false;
-		if (mapInfo.maps[y][x] == WALL) return false;
-		if (isCoordInClose(x, y)) return false;
+		if (x < 0 || x >= mapInfo.getWidth() || y < 0 || y >= mapInfo.getHight()) {
+			return false;
+		}
+		if (mapInfo.getMapContent(y,x) == WALL) {
+			return false;
+		}
+		if (isCoordInClose(x, y)) {
+			return false;
+		}
 		return true;
 	}
 
 
 	private boolean isCoordInClose(Coord coord)
 	{
-		return coord!=null&&isCoordInClose(coord.x, coord.y);
+		return coord!=null&&isCoordInClose(coord.getX(), coord.getY());
 	}
 
 
 	private boolean isCoordInClose(int x, int y)
 	{
-		if (closeList.isEmpty()) return false;
+		if (closeList.isEmpty()) {
+			return false;
+		}
 		for (Node node : closeList)
 		{
-			if (node.coord.x == x && node.coord.y == y)
-			{
+			if (node.getCoord().getX() == x && node.getCoord().getY() == y) {
 				return true;
 			}
 		}

@@ -1,6 +1,5 @@
-package routeAlgorithm.test;
+package mycontroller;
 
-import routeAlgorithm.*;
 import world.WorldSpatial;
 
 /**

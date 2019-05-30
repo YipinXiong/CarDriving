@@ -1,6 +1,5 @@
 package mycontroller;
 
-import routeAlgorithm.test.Test;
 import tiles.MapTile;
 import tiles.ParcelTrap;
 import utilities.Coordinate;
@@ -24,11 +23,6 @@ import static mycontroller.ActionState.*;
  */
 
 public abstract class AbstractVariantStrategy implements IVariantStrategy {
-    //TODO 单独建一个类
-//    LEAVE代表收集了足够的包裹，直接前往终点。
-//    PICKUP表示没有收集到足够的包裹，此时在视野中出现了可到达的包裹，前去收集。
-//    START代表默认去终点的探索过程。
-//    EXPLOIT代表已经到了终点，但是包裹不够，这时进入随机探索模式。
     private boolean atTargetPosition = false;
     private boolean firstSearch = true;
     private ActionState currentState = START;
